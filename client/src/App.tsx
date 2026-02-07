@@ -1,0 +1,30 @@
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen bg-background">
+        <nav className="border-b px-4 py-3 flex gap-4">
+          <NavLink to="/" className={({ isActive }) =>
+            isActive ? "font-bold" : "text-muted-foreground"
+          }>Dashboard</NavLink>
+          <NavLink to="/jobs" className={({ isActive }) =>
+            isActive ? "font-bold" : "text-muted-foreground"
+          }>Job Journal</NavLink>
+          <NavLink to="/interview" className={({ isActive }) =>
+            isActive ? "font-bold" : "text-muted-foreground"
+          }>Mock Interview</NavLink>
+        </nav>
+        <main className="p-4">
+          <Routes>
+            <Route path="/" element={<div>Dashboard</div>} />
+            <Route path="/jobs" element={<div>Job Journal</div>} />
+            <Route path="/interview" element={<div>Mock Interview</div>} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
