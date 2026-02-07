@@ -30,7 +30,7 @@ export function MockInterview() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Mock Interview</h1>
+        <h1 className="text-2xl font-bold" style={{ fontFamily: "'DM Serif Display', serif" }}>Mock Interview</h1>
         <AddQuestionDialog onCreated={refresh} />
       </div>
 

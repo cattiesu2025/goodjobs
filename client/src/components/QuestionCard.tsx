@@ -43,7 +43,7 @@ export function QuestionCard({ question, onUpdate, onDelete }: Props) {
   };
 
   return (
-    <Card>
+    <Card className="hover:shadow-md transition-shadow">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <Badge variant="outline">{question.label}</Badge>

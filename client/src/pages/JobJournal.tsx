@@ -30,7 +30,7 @@ export function JobJournal() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Job Journal</h1>
+        <h1 className="text-2xl font-bold" style={{ fontFamily: "'DM Serif Display', serif" }}>Job Journal</h1>
         <AddJobDialog statuses={statuses} onCreated={refresh} />
       </div>
 

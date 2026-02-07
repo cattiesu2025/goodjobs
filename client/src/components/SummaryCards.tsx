@@ -21,14 +21,14 @@ export function SummaryCards({ jobs }: { jobs: Job[] }) {
   return (
     <div className="flex flex-col gap-3">
       {cards.map((card) => (
-        <Card key={card.title}>
+        <Card key={card.title} className="hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               {card.title}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{card.value}</div>
+            <div className="text-3xl font-bold">{card.value}</div>
           </CardContent>
         </Card>
       ))}

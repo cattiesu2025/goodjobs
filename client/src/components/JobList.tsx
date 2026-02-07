@@ -30,7 +30,7 @@ export function JobList({ jobs, statuses, search, statusFilter, onSelect }: Prop
         <div
           key={job.id}
           onClick={() => onSelect(job)}
-          className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-accent transition-colors"
+          className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-accent hover:shadow-sm transition-all"
         >
           <div>
             <div className="font-medium">{job.company}</div>
@@ -40,7 +40,7 @@ export function JobList({ jobs, statuses, search, statusFilter, onSelect }: Prop
             {job.deadline && (
               <span className="text-muted-foreground">{job.deadline}</span>
             )}
-            <Badge style={{ backgroundColor: colorMap[job.currentStatus] }}>
+            <Badge style={{ backgroundColor: colorMap[job.currentStatus], color: "white" }}>
               {job.currentStatus}
             </Badge>
           </div>

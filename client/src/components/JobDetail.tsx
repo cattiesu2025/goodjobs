@@ -35,9 +35,9 @@ export function JobDetail({ jobId, statuses, onBack }: Props) {
       <button onClick={onBack} className="text-sm underline">&larr; Back to list</button>
 
       <div className="space-y-1">
-        <h2 className="text-xl font-bold">{job.company} — {job.jobTitle}</h2>
+        <h2 className="text-xl font-bold" style={{ fontFamily: "'DM Serif Display', serif" }}>{job.company} — {job.jobTitle}</h2>
         <div className="flex items-center gap-3 text-sm">
-          <Badge style={{ backgroundColor: colorMap[job.currentStatus] }}>
+          <Badge style={{ backgroundColor: colorMap[job.currentStatus], color: "white" }}>
             {job.currentStatus}
           </Badge>
           {job.contactPerson && <span>Contact: {job.contactPerson}</span>}
