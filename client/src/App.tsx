@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { Dashboard } from "./pages/Dashboard";
 import { JobJournal } from "./pages/JobJournal";
+import { MockInterview } from "./pages/MockInterview";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/jobs" element={<JobJournal />} />
-            <Route path="/interview" element={<div>Mock Interview</div>} />
+            <Route path="/interview" element={<MockInterview />} />
           </Routes>
         </main>
       </div>
