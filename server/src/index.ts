@@ -34,7 +34,8 @@ if (fs.existsSync(clientDist)) {
   });
 }
 
-serve({ fetch: app.fetch, port: 3001 }, (info) => {
+const port = Number(process.env.PORT) || 3001;
+serve({ fetch: app.fetch, port }, (info) => {
   console.log(`Server running at http://localhost:${info.port}`);
 });
 

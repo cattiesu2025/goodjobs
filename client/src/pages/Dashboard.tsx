@@ -19,7 +19,6 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold" style={{ fontFamily: "'DM Serif Display', serif" }}>Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4">
         <SummaryCards jobs={jobs} />
         <Card>
@@ -36,9 +35,6 @@ export function Dashboard() {
         </Card>
       </div>
       <Card>
-        <CardHeader>
-          <CardTitle>Calendar</CardTitle>
-        </CardHeader>
         <CardContent>
           <DashboardCalendar />
         </CardContent>
