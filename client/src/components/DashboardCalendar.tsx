@@ -26,10 +26,7 @@ export function DashboardCalendar() {
   const fetchEvents = useCallback(async (date: Date) => {
     const start = startOfMonth(date).toISOString().slice(0, 10);
     const end = endOfMonth(date).toISOString().slice(0, 10);
-    const data = await api.getCalendarEvents(start, end) as {
-      events: CalendarEvent[];
-      colorMap: Record<string, string>;
-    };
+    const data = await api.getCalendarEvents(start, end);
     setEvents(
       data.events.map((e) => ({
         title: `${e.company} — ${e.status}`,
