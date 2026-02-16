@@ -18,6 +18,6 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/server/node_modules ./server/node_modules
 WORKDIR /app/server
 ENV NODE_ENV=production
-ENV DB_PATH=/data/goodjob.db
+ENV DB_PATH=/app/server/goodjob.db
 EXPOSE 3001
 CMD ["node", "dist/index.js"]
