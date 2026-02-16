@@ -25,13 +25,13 @@ export function StatusPieChart({ jobs, statuses, onSliceClick }: Props) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={200}>
       <PieChart>
         <Pie
           data={data}
           cx="50%"
           cy="50%"
-          outerRadius={100}
+          outerRadius={70}
           dataKey="value"
           label={({ name, value }) => `${name}: ${value}`}
           onClick={(_, index) => onSliceClick?.(data[index].name)}

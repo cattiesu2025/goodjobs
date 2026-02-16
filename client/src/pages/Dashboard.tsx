@@ -19,20 +19,46 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4">
         <SummaryCards jobs={jobs} />
-        <Card>
-          <CardHeader>
-            <CardTitle>Job Status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <StatusPieChart
-              jobs={jobs}
-              statuses={statuses}
-              onSliceClick={(status) => navigate(`/jobs?status=${status}`)}
-            />
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card>
+            <CardContent className="pt-4">
+              <StatusPieChart
+                jobs={jobs}
+                statuses={statuses}
+                onSliceClick={(status) => navigate(`/jobs?status=${status}`)}
+              />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                To Apply
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {jobs
+                .filter((j) => j.currentStatus === "Saved")
+                .slice(0, 8)
+                .map((j) => (
+                  <div
+                    key={j.id}
+                    className="flex justify-between items-center text-sm cursor-pointer hover:bg-muted/50 rounded px-2 py-1 transition-colors"
+                    onClick={() => navigate(`/jobs?id=${j.id}`)}
+                  >
+                    <span className="font-medium truncate">{j.company}</span>
+                    <span className="text-muted-foreground text-xs truncate ml-2">
+                      {j.jobTitle}
+                    </span>
+                  </div>
+                ))}
+              {jobs.filter((j) => j.currentStatus === "Saved").length === 0 && (
+                <p className="text-sm text-muted-foreground">No saved jobs</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
       <Card>
         <CardContent>

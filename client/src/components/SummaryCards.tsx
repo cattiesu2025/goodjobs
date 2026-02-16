@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { Job } from "@/lib/types";
 
 export function SummaryCards({ jobs }: { jobs: Job[] }) {
@@ -19,16 +19,14 @@ export function SummaryCards({ jobs }: { jobs: Job[] }) {
   ];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {cards.map((card) => (
         <Card key={card.title} className="hover:shadow-md transition-shadow">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardContent className="py-2 px-3 flex items-center justify-between">
+            <span className="text-xs font-medium text-muted-foreground">
               {card.title}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">{card.value}</div>
+            </span>
+            <span className="text-xl font-bold">{card.value}</span>
           </CardContent>
         </Card>
       ))}
