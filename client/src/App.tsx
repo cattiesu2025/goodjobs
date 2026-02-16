@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -84,7 +85,83 @@ function AppLayout() {
   );
 }
 
+function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      if (res.ok) {
+        onSuccess();
+      } else {
+        setError("Wrong password");
+      }
+    } catch {
+      setError("Connection error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-sm space-y-4"
+      >
+        <h1 className="text-2xl font-semibold text-center text-foreground">
+          GoodJobs
+        </h1>
+        <p className="text-sm text-muted-foreground text-center">
+          Enter password to continue
+        </p>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          autoFocus
+          className="file:text-foreground placeholder:text-muted-foreground border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm"
+        />
+        {error && (
+          <p className="text-sm text-destructive text-center">{error}</p>
+        )}
+        <button
+          type="submit"
+          disabled={loading || !password}
+          className="w-full h-9 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          {loading ? "..." : "Log in"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 function App() {
+  const [authed, setAuthed] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth")
+      .then((res) => setAuthed(res.ok))
+      .catch(() => setAuthed(false));
+  }, []);
+
+  if (authed === null) return null; // loading
+
+  if (!authed) {
+    return <LoginScreen onSuccess={() => setAuthed(true)} />;
+  }
+
   return (
     <BrowserRouter>
       <AppLayout />
