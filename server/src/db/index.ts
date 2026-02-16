@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import Database from "better-sqlite3";
@@ -6,6 +7,12 @@ import * as schema from "./schema.js";
 
 const __dirname = import.meta.dirname ?? path.dirname(fileURLToPath(import.meta.url));
 const dbPath = process.env.DB_PATH || path.resolve(__dirname, "../../goodjob.db");
+
+// Ensure the directory exists before opening the database
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
 
 const sqlite = new Database(dbPath);
 sqlite.pragma("journal_mode = WAL");
