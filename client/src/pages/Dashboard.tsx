@@ -31,10 +31,14 @@ export function Dashboard() {
   const addTodo = async () => {
     const trimmed = newText.trim();
     if (!trimmed) return;
-    const todo = await api.addDashboardTodo(trimmed);
-    setTodos((prev) => [todo, ...prev]);
-    setNewText("");
-    setAdding(false);
+    try {
+      const todo = await api.addDashboardTodo(trimmed);
+      setTodos((prev) => [todo, ...prev]);
+      setNewText("");
+      setAdding(false);
+    } catch {
+      console.error("Failed to add todo");
+    }
   };
 
   const toggleTodo = async (id: number) => {

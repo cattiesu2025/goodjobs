@@ -61,6 +61,12 @@ if (!tableCheck) {
       completed INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL
     );
+    CREATE TABLE dashboard_todos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      content TEXT NOT NULL,
+      completed INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL
+    );
     CREATE TABLE interview_questions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       question TEXT NOT NULL,
@@ -91,6 +97,22 @@ if (!tableCheck) {
     ["Withdrawn", "#9ca3af", 10],
   ]);
   console.log("Database initialized with default statuses.");
+}
+
+// Migrate: add dashboard_todos table if missing
+const dashboardTodosCheck = sqlite.prepare(
+  "SELECT name FROM sqlite_master WHERE type='table' AND name='dashboard_todos'"
+).get();
+if (!dashboardTodosCheck) {
+  console.log("Adding dashboard_todos table...");
+  sqlite.exec(`
+    CREATE TABLE dashboard_todos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      content TEXT NOT NULL,
+      completed INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL
+    );
+  `);
 }
 
 export const db = drizzle(sqlite, { schema });
