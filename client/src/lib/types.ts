@@ -42,6 +42,13 @@ export interface JobDetail extends Job {
   todos: JobPrepTodo[];
 }
 
+export interface DashboardTodo {
+  id: number;
+  content: string;
+  completed: boolean;
+  createdAt: string;
+}
+
 export interface InterviewQuestion {
   id: number;
   question: string;

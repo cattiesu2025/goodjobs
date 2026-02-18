@@ -18,6 +18,7 @@ import type {
   Job,
   JobDetail,
   JobPrepTodo,
+  DashboardTodo,
   InterviewQuestion,
   CalendarEvent,
 } from "./types";
@@ -50,6 +51,15 @@ export const api = {
     request<JobPrepTodo>(`/jobs/${jobId}/todos/${todoId}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteTodo: (jobId: number, todoId: number) =>
     request<void>(`/jobs/${jobId}/todos/${todoId}`, { method: "DELETE" }),
+
+  // Dashboard todos
+  getDashboardTodos: () => request<DashboardTodo[]>("/todos"),
+  addDashboardTodo: (content: string) =>
+    request<DashboardTodo>("/todos", { method: "POST", body: JSON.stringify({ content }) }),
+  updateDashboardTodo: (id: number, data: Record<string, unknown>) =>
+    request<DashboardTodo>(`/todos/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteDashboardTodo: (id: number) =>
+    request<void>(`/todos/${id}`, { method: "DELETE" }),
 
   // Interview questions
   getQuestions: () => request<InterviewQuestion[]>("/questions"),

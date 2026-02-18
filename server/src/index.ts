@@ -10,6 +10,7 @@ import statusesRoutes from "./routes/statuses.js";
 import jobsRoutes from "./routes/jobs.js";
 import questionsRoutes from "./routes/questions.js";
 import calendarRoutes from "./routes/calendar.js";
+import todosRoutes from "./routes/todos.js";
 
 const app = new Hono();
 
@@ -64,6 +65,7 @@ app.route("/api/statuses", statusesRoutes);
 app.route("/api/jobs", jobsRoutes);
 app.route("/api/questions", questionsRoutes);
 app.route("/api/calendar", calendarRoutes);
+app.route("/api/todos", todosRoutes);
 
 // Serve static frontend in production
 const __dirname =

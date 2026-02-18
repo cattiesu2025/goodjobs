@@ -39,6 +39,13 @@ export const jobPrepTodos = sqliteTable("job_prep_todos", {
   createdAt: text("created_at").notNull().$defaultFn(() => new Date().toISOString()),
 });
 
+export const dashboardTodos = sqliteTable("dashboard_todos", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  content: text("content").notNull(),
+  completed: integer("completed", { mode: "boolean" }).notNull().default(false),
+  createdAt: text("created_at").notNull().$defaultFn(() => new Date().toISOString()),
+});
+
 export const interviewQuestions = sqliteTable("interview_questions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   question: text("question").notNull(),

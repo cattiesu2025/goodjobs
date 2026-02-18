@@ -7,33 +7,12 @@ import { DashboardCalendar } from "@/components/DashboardCalendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
-import type { Job, Status } from "@/lib/types";
-
-interface TodoItem {
-  id: string;
-  text: string;
-  done: boolean;
-  createdAt: string;
-}
-
-const TODO_KEY = "dashboard-todos";
-
-function loadTodos(): TodoItem[] {
-  try {
-    return JSON.parse(localStorage.getItem(TODO_KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-function saveTodos(todos: TodoItem[]) {
-  localStorage.setItem(TODO_KEY, JSON.stringify(todos));
-}
+import type { Job, Status, DashboardTodo } from "@/lib/types";
 
 export function Dashboard() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [statuses, setStatuses] = useState<Status[]>([]);
-  const [todos, setTodos] = useState<TodoItem[]>(loadTodos);
+  const [todos, setTodos] = useState<DashboardTodo[]>([]);
   const [adding, setAdding] = useState(false);
   const [newText, setNewText] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,39 +21,32 @@ export function Dashboard() {
   useEffect(() => {
     api.getJobs().then(setJobs);
     api.getStatuses().then(setStatuses);
+    api.getDashboardTodos().then(setTodos);
   }, []);
-
-  useEffect(() => {
-    saveTodos(todos);
-  }, [todos]);
 
   useEffect(() => {
     if (adding) inputRef.current?.focus();
   }, [adding]);
 
-  const addTodo = () => {
+  const addTodo = async () => {
     const trimmed = newText.trim();
     if (!trimmed) return;
-    setTodos((prev) => [
-      { id: crypto.randomUUID(), text: trimmed, done: false, createdAt: new Date().toISOString() },
-      ...prev,
-    ]);
+    const todo = await api.addDashboardTodo(trimmed);
+    setTodos((prev) => [todo, ...prev]);
     setNewText("");
     setAdding(false);
   };
 
-  const toggleTodo = (id: string) => {
-    setTodos((prev) => {
-      const updated = prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t));
-      const active = updated.filter((t) => !t.done);
-      const done = updated.filter((t) => t.done);
-      return [...active, ...done];
-    });
+  const toggleTodo = async (id: number) => {
+    const todo = todos.find((t) => t.id === id);
+    if (!todo) return;
+    const updated = await api.updateDashboardTodo(id, { completed: !todo.completed });
+    setTodos((prev) => prev.map((t) => (t.id === id ? updated : t)));
   };
 
   const sortedTodos = (() => {
-    const active = todos.filter((t) => !t.done).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    const done = todos.filter((t) => t.done).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const active = todos.filter((t) => !t.completed).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const done = todos.filter((t) => t.completed).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     return [...active, ...done];
   })();
 
@@ -134,19 +106,19 @@ export function Dashboard() {
               {sortedTodos.map((todo) => (
                 <div
                   key={todo.id}
-                  className={`flex items-start gap-2 rounded px-2 py-1.5 transition-colors cursor-pointer group ${todo.done ? "opacity-50" : "hover:bg-muted/50"}`}
+                  className={`flex items-start gap-2 rounded px-2 py-1.5 transition-colors cursor-pointer group ${todo.completed ? "opacity-50" : "hover:bg-muted/50"}`}
                   onClick={() => toggleTodo(todo.id)}
                 >
-                  <span className={`mt-0.5 flex-shrink-0 size-4 rounded-full border-2 flex items-center justify-center transition-colors ${todo.done ? "border-muted-foreground bg-muted-foreground" : "border-muted-foreground"}`}>
-                    {todo.done && (
+                  <span className={`mt-0.5 flex-shrink-0 size-4 rounded-full border-2 flex items-center justify-center transition-colors ${todo.completed ? "border-muted-foreground bg-muted-foreground" : "border-muted-foreground"}`}>
+                    {todo.completed && (
                       <svg className="size-2.5 text-background" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M2 6l3 3 5-5" />
                       </svg>
                     )}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className={`text-sm leading-tight ${todo.done ? "line-through text-muted-foreground" : ""}`}>
-                      {todo.text}
+                    <p className={`text-sm leading-tight ${todo.completed ? "line-through text-muted-foreground" : ""}`}>
+                      {todo.content}
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-0.5">
                       {new Date(todo.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
